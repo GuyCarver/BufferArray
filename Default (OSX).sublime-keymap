@@ -1,0 +1,23 @@
+[
+	{ "keys": ["keypad1"], "command": "get_buffer", "args": {"slot": 1} },
+	{ "keys": ["keypad2"], "command": "get_buffer", "args": {"slot": 2} },
+	{ "keys": ["keypad3"], "command": "get_buffer", "args": {"slot": 3} },
+	{ "keys": ["keypad4"], "command": "get_buffer", "args": {"slot": 4} },
+	{ "keys": ["keypad5"], "command": "get_buffer", "args": {"slot": 5} },
+	{ "keys": ["keypad6"], "command": "get_buffer", "args": {"slot": 6} },
+	{ "keys": ["keypad7"], "command": "get_buffer", "args": {"slot": 7} },
+	{ "keys": ["keypad8"], "command": "get_buffer", "args": {"slot": 8} },
+	{ "keys": ["keypad9"], "command": "get_buffer", "args": {"slot": 9} },
+	{ "keys": ["keypad0"], "command": "get_buffer", "args": {"slot": 0} },
+	{ "keys": ["super+keypad1"], "command": "set_buffer", "args": {"slot": 1} },
+	{ "keys": ["super+keypad2"], "command": "set_buffer", "args": {"slot": 2} },
+	{ "keys": ["super+keypad3"], "command": "set_buffer", "args": {"slot": 3} },
+	{ "keys": ["super+keypad4"], "command": "set_buffer", "args": {"slot": 4} },
+	{ "keys": ["super+keypad5"], "command": "set_buffer", "args": {"slot": 5} },
+	{ "keys": ["super+keypad6"], "command": "set_buffer", "args": {"slot": 6} },
+	{ "keys": ["super+keypad7"], "command": "set_buffer", "args": {"slot": 7} },
+	{ "keys": ["super+keypad8"], "command": "set_buffer", "args": {"slot": 8} },
+	{ "keys": ["super+keypad9"], "command": "set_buffer", "args": {"slot": 9} },
+	{ "keys": ["super+keypad0"], "command": "set_buffer", "args": {"slot": 0} },
+	{ "keys": ["alt+keypad0"], "command": "goto_buffer" }
+]
