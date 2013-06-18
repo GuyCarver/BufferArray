@@ -1,7 +1,8 @@
 import sublime, sublime_plugin
 
 sets_path = "BufferArray.sublime-settings"
-ba_settings = sublime.load_settings(sets_path)
+ba_settings = None
+buf = None
 
 class Buffers :
   def __init__( self ) :
@@ -23,16 +24,16 @@ class Buffers :
 
     self.Slots[aSlot] = aName + "," + aPath
     self.Dirty = True
-#    print "setting slot %d: %s" % (aSlot, self.Slots[aSlot])
+#    print("setting slot {}: {}".format(aSlot, self.Slots[aSlot]))
 
   def Get( self, aSlot ) :
-#    print "getting slot %d: %s" % (aSlot, self.Slots[aSlot])
+#    print("getting slot {}: {}".format(aSlot, self.Slots[aSlot]))
     return self.Slots[aSlot]
 
   def List( self ) :
     i = 0
     for b in self.Slots :
-      print "%d: %s" % (i, b)
+      print("{}: {}".format(i, b))
       i += 1
 
   def _GetDisplayName( self, aSlot ) :
@@ -43,7 +44,7 @@ class Buffers :
 
   def getScratch( self, aWindow, aName ) :
     for v in aWindow.views() :
-#      print "Comparing: %s - %s" % (aName, v.name())
+#      print("Comparing: {} - {}".format(aName, v.name()))
       if v.name() == aName :
         aWindow.focus_view(v)
         break
@@ -53,7 +54,7 @@ class Buffers :
     if p and (p != "") :
       vw = aWindow.open_file(p)
       if vw :
-#        print "setting focus to %s" % p
+#        print("setting focus to " + p)
         g, i = aWindow.get_view_index(vw)
         aWindow.focus_view(vw)
         aWindow.focus_group(g)
@@ -65,8 +66,6 @@ class Buffers :
       ba_settings.set("slots", self.Slots)
       sublime.save_settings(sets_path)
       self.Dirty = False
-
-buf = Buffers()
 
 class SetBufferCommand( sublime_plugin.WindowCommand ) :
   def run( self, slot ) :
@@ -95,5 +94,12 @@ class GotoBufferCommand( sublime_plugin.WindowCommand ) :
     return buf.GetItems()
 
 class BufferListener( sublime_plugin.EventListener ) :
-  def on_post_save( self, view ) :
+  def on_post_save_async( self, view ) :
     buf.Save()
+
+def plugin_loaded(  ) :
+  global buf
+  global ba_settings
+
+  ba_settings = sublime.load_settings(sets_path)
+  buf = Buffers()
