@@ -1,4 +1,4 @@
-# Sublime Text 2 BufferArray Package
+# Sublime Text BufferArray Package
 
 ## Install
 
