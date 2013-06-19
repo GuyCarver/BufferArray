@@ -19,5 +19,5 @@
 	{ "keys": ["ctrl+keypad8"], "command": "set_buffer", "args": {"slot": 8} },
 	{ "keys": ["ctrl+keypad9"], "command": "set_buffer", "args": {"slot": 9} },
 	{ "keys": ["ctrl+keypad0"], "command": "set_buffer", "args": {"slot": 0} },
-	{ "keys": ["alt+keypad0"], "command": "goto_buffer" }
+	{ "keys": ["alt+keypad0"],  "command": "goto_buffer" }
 ]
