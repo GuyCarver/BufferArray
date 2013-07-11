@@ -1,4 +1,5 @@
 import sublime, sublime_plugin
+import os
 
 sets_path = "BufferArray.sublime-settings"
 ba_settings = None
@@ -7,7 +8,7 @@ buf = None
 class Buffers :
   def __init__( self ) :
     self.Dirty = False
-    self.Slots = [","] * ba_settings.get("MaxSlots", 10)
+    self.Slots = [(-3, "")] * ba_settings.get("MaxSlots", 10)
     sl = ba_settings.get("slots")
     if sl :
       i = 0
@@ -16,13 +17,14 @@ class Buffers :
           self.Slots[i] = s
           i += 1
 
-  def Set( self, aSlot, aName, aPath ) :
-    if not aName :
-      aName = ""
-    if not aPath :
-      aPath = ""
+  def Set( self, aSlot, aName, aPath, aRow ) :
+    if aPath :
+      sname = aPath
+    else :
+      aRow = -1
+      sname = aName if aName else ""
 
-    self.Slots[aSlot] = aName + "," + aPath
+    self.Slots[aSlot] = (aRow, sname)
     self.Dirty = True
 #    print("setting slot {}: {}".format(aSlot, self.Slots[aSlot]))
 
@@ -40,7 +42,13 @@ class Buffers :
     return aSlot
 
   def GetItems( self ) :
-    return self.Slots #[self._GetDisplayName(slot) for slot in self.Slots ]
+    def nameString(aSlot) :
+      _, name = os.path.split(aSlot[1])
+      if aSlot[0] > 0 :
+        name += ":" + str(aSlot[0])
+      return name
+
+    return [nameString(slot) for slot in self.Slots ]
 
   def getScratch( self, aWindow, aName ) :
     for v in aWindow.views() :
@@ -50,16 +58,21 @@ class Buffers :
         break
 
   def SetActive( self, aWindow, aSlot ) :
-    n, p = buf.Get(aSlot).split(",", 1)
-    if p and (p != "") :
-      vw = aWindow.open_file(p)
+    t, p = buf.Get(aSlot)
+    if t >= 0 :
+      if t > 0 :
+        openF = sublime.ENCODED_POSITION
+        p = p + ':' + str(t)
+      else:
+        openF = 0
+      vw = aWindow.open_file(p, openF)
       if vw :
 #        print("setting focus to " + p)
         g, i = aWindow.get_view_index(vw)
         aWindow.focus_view(vw)
         aWindow.focus_group(g)
-    elif n and (n != "") :
-      self.getScratch(aWindow, n)
+    else:
+      self.getScratch(aWindow, p)
 
   def Save( self ) :
     if self.Dirty :
@@ -68,9 +81,17 @@ class Buffers :
       self.Dirty = False
 
 class SetBufferCommand( sublime_plugin.WindowCommand ) :
-  def run( self, slot ) :
+  def run( self, slot, row = False ) :
     vw = self.window.active_view()
-    buf.Set(slot, vw.name(), vw.file_name())
+
+    if row :
+      print("row set")
+      pnt = vw.sel()[0].a
+      vrow, _ = vw.rowcol(pnt)
+      vrow += 1 #1 based.
+    else:
+      vrow = 0
+    buf.Set(slot, vw.name(), vw.file_name(), vrow)
 
 class GetBufferCommand( sublime_plugin.WindowCommand ) :
 
