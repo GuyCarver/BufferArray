@@ -29,5 +29,5 @@
 	{ "keys": ["ctrl+k","keypad8"], "command": "set_buffer", "args": {"slot": 8, "row": true} },
 	{ "keys": ["ctrl+k","keypad9"], "command": "set_buffer", "args": {"slot": 9, "row": true} },
 	{ "keys": ["ctrl+k","keypad0"], "command": "set_buffer", "args": {"slot": 0, "row": true} },
-	{ "keys": ["alt+keypad0"],  "command": "goto_buffer" }
+	{ "keys": ["ctrl+k","ctrl+keypad0"],  "command": "goto_buffer" }
 ]
